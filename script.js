@@ -22,11 +22,18 @@ function searchCities(query,cities){
  })
 }
 
+function formatPopulation(number) {
+  return Number(number).toLocaleString('en-US');
+}
+
 function displayCities(value){
 const cityArr =  searchCities(value,cities);
 const html = cityArr.map((item)=>{
-return `<li><span class="name">${item.city}, ${item.state}</span>
-            <span class="population">${item.population}</span>
+  const regex = new RegExp(value,'gi');
+  const cityName = item.city.replace(regex,`<span class='hl'>${value}</span>`);
+  const stateName = item.state.replace(regex,`<span class='hl'>${value}</span>`);
+return `<li><span class="name">${cityName}, ${stateName}</span>
+            <span class="population">${formatPopulation(item.population)}</span>
         </li> `
 }).join('');
 suggestions.innerHTML = html;
